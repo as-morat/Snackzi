@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/pages/auth/sign_in_screen.dart';
+import 'package:food_delivery/services/auth_service.dart';
 import 'package:food_delivery/widgets/my_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,6 +15,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isChecked = false;
+  final AuthService _authService = AuthService();
+
+  Future<void> SignUp() async{
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    final emailRegex = RegExp(r"^\w+@([\w-]+\.)+[\w-]{2,4}$");
+    if(!emailRegex.hasMatch(email)){
+
+    }
+}
 
   final baseText = GoogleFonts.poppins(
     fontSize: 15,
