@@ -118,7 +118,7 @@ class _SignInScreenState extends State<SignInScreen> {
             // Sign Up Button
             SizedBox(
               width: .maxFinite,
-              child: isPasswordChecked
+              child: isLoading
                   ? const Center(
                       child: CircularProgressIndicator(color: Colors.blue),
                     )
