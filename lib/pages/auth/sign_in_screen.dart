@@ -3,6 +3,9 @@ import 'package:food_delivery/pages/auth/sign_up_screen.dart';
 import 'package:food_delivery/widgets/my_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../services/auth_service.dart';
+import '../../utils/custome_snackbar.dart';
+
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
 
@@ -13,7 +16,59 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool isChecked = false;
+  bool isPasswordChecked = false;
+  bool isLoading = false;
+  final AuthService _authService = AuthService();
+
+  Future<void> signIn() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    final emailRegex = RegExp(r"^\w+@([\w-]+\.)+[\w-]{2,4}$");
+
+    // INVALID EMAIL
+    if (!emailRegex.hasMatch(email)) {
+      showSnackBar(
+        context: context,
+        snackBarType: SnackBarType.failed,
+        message: "Invalid email format",
+      );
+      return; // STOP HERE
+    }
+
+    // EMPTY CHECK
+    if (email.isEmpty || password.isEmpty) {
+      showSnackBar(
+        context: context,
+        snackBarType: SnackBarType.failed,
+        message: "Email or password cannot be empty",
+      );
+      return;
+    }
+
+    if (!mounted) return;
+    setState(() => isLoading = true);
+
+    final result = await _authService.login(email, password);
+
+    if (!mounted) return;
+    setState(() => isLoading = false);
+
+    if (result == null) {
+      showSnackBar(
+        context: context,
+        snackBarType: SnackBarType.success,
+        message: "Sign In Successful!",
+      );
+    }
+    else {
+      showSnackBar(
+        context: context,
+        snackBarType: SnackBarType.failed,
+        message: result,
+      );
+    }
+  }
 
   final baseText = GoogleFonts.poppins(
     fontSize: 15,
@@ -43,18 +98,18 @@ class _SignInScreenState extends State<SignInScreen> {
             // Input Fields for Password
             TextField(
               controller: passwordController,
-              obscureText: !isChecked,
+              obscureText: !isPasswordChecked,
               decoration: InputDecoration(
                 labelText: "Password",
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
-                      isChecked = !isChecked;
+                      isPasswordChecked = !isPasswordChecked;
                     });
                   },
                   icon: Icon(
-                    isChecked ? Icons.visibility : Icons.visibility_off,
+                    isPasswordChecked ? Icons.visibility : Icons.visibility_off,
                   ),
                 ),
               ),
@@ -63,7 +118,11 @@ class _SignInScreenState extends State<SignInScreen> {
             // Sign Up Button
             SizedBox(
               width: .maxFinite,
-              child: MyButton(onTap: () {}, buttonText: "Sign In"),
+              child: isPasswordChecked
+                  ? const Center(
+                      child: CircularProgressIndicator(color: Colors.blue),
+                    )
+                  : MyButton(onTap: signIn, buttonText: "Sign In"),
             ),
             const SizedBox(height: 20),
             // Already have an account?
