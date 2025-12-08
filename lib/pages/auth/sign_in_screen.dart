@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/pages/auth/sign_in_screen.dart';
+import 'package:food_delivery/pages/auth/sign_up_screen.dart';
 import 'package:food_delivery/widgets/my_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isChecked = false;
@@ -29,7 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Column(
           children: [
             // Intro Images
-            Image.asset("images/6343825.jpg", width: 500, fit: .cover),
+            Image.asset("images/login.jpg", width: 500, fit: .cover),
             const SizedBox(height: 20),
             // Input Fields for email
             TextField(
@@ -63,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             // Sign Up Button
             SizedBox(
               width: .maxFinite,
-              child: MyButton(onTap: () {}, buttonText: "Sign Up"),
+              child: MyButton(onTap: () {}, buttonText: "Sign In"),
             ),
             const SizedBox(height: 20),
             // Already have an account?
@@ -71,17 +71,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
               mainAxisAlignment: .center,
               mainAxisSize: .min,
               children: [
-                Text("Already have an account?", style: baseText),
+                Text("Do not have an account?", style: baseText),
                 const SizedBox(width: 5),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (_) => SignInScreen()),
+                      MaterialPageRoute(builder: (_) => const SignUpScreen()),
                     );
                   },
                   child: Text(
-                    "Login here",
+                    "Signup here",
                     style: baseText.copyWith(
                       fontWeight: .bold,
                       color: Colors.blue,
