@@ -4,9 +4,9 @@ It allows users to browse restaurants, order food, track their delivery, and enj
 
 ## UI Screens
 <p align="center">
-  <img src="img2.png" width="32%" />
+  <img src="img_2.png" width="32%" />
   <img src="img.png" width="32%" />
-  <img src="img1.png" width="32%" />
+  <img src="img_1.png" width="32%" />
 </p>
 
 ## Dependencies
