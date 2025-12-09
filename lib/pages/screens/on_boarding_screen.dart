@@ -11,10 +11,10 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final PageController _pageController = PageController();
+  int currentPage = 0;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    int currentPage = 0;
     return Scaffold(
       body: Stack(
         children: [
@@ -62,6 +62,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           Align(
             alignment: .bottomCenter,
             child: ClipPath(
+              clipper: CustomClip(),
               child: Container(
                 color: Colors.white,
                 padding: .symmetric(vertical: 75, horizontal: 50),
@@ -74,6 +75,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       child: PageView.builder(
                         controller: _pageController,
                         itemCount: data.length,
+                        onPageChanged: (value){
+                          setState(() {
+                            currentPage = value;
+                          });
+                        },
                         itemBuilder: (_, index) {
                           final item = data[index];
                           return Column(
@@ -113,19 +119,19 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       ),
                     ),
                     Row(
-                      mainAxisAlignment: .center,
+                      mainAxisSize: .min,
                       children: List.generate(
                         data.length,
                         (index) => AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
                           margin: const .only(right: 10),
-                          width: currentPage == index ? 20 : 10,
+                          width: currentPage == index ? 25 : 10,
                           height: 10,
                           decoration: BoxDecoration(
                             color: currentPage == index
                                 ? Colors.orange
                                 : Colors.grey.shade400,
-                            borderRadius: .circular(12),
+                            borderRadius: .circular(10),
                           ),
                         ),
                       ),
@@ -157,4 +163,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       ),
     );
   }
+}
+
+class CustomClip extends CustomClipper<Path>{
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, 30);
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 30);
+    path.quadraticBezierTo(size.width / 2, -30, 0, 30);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }
