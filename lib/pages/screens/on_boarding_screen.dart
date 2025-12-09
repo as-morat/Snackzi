@@ -154,9 +154,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       child: Text(
                         "Get Started",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           color: Colors.white,
-                          fontWeight: .w700,
+                          fontWeight: .w600,
                         ),
                       ),
                     ),

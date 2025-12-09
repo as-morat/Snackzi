@@ -9,7 +9,7 @@ class MyButton extends StatelessWidget {
     super.key,
     required this.onTap,
     required this.buttonText,
-    this.color = Colors.blueAccent,
+    this.color = Colors.redAccent,
   });
 
   @override
