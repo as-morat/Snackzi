@@ -1,14 +1,15 @@
+import 'package:flutter/cupertino.dart';
+
 class CategoryModel {
-  int id;
   String image, name;
 
-  CategoryModel({required this.id, required this.image, required this.name});
+  CategoryModel({ required this.image, required this.name});
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
+    debugPrint("Creating CategoryModel from: $json");
     return CategoryModel(
-      id: json['id'],
-      image: json['image'] ?? "",
-      name: json['name'] ?? "",
+      image: json['image']?.toString() ?? "",
+      name: json['name']?.toString() ?? "",
     );
   }
 }
