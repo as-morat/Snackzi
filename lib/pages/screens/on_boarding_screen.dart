@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/models/on_boarding_model.dart';
+import 'package:food_delivery/pages/auth/sign_up_screen.dart';
 import 'package:food_delivery/utils/colors.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -138,7 +139,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     const SizedBox(height: 30),
                     // navigation button
                     MaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => SignUpScreen()),
+                        );
+                      },
                       color: red,
                       height: 65,
                       minWidth: 250,
