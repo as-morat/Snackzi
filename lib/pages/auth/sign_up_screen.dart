@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/pages/auth/sign_in_screen.dart';
 import 'package:food_delivery/services/auth_service.dart';
+import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/custome_snackbar.dart';
 import 'package:food_delivery/widgets/my_button_widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -59,8 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         snackBarType: SnackBarType.success,
         message: "Sign Up Successful!",
       );
-    }
-    else {
+    } else {
       showSnackBar(
         context: context,
         snackBarType: SnackBarType.failed,
@@ -90,7 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Column(
           children: [
             // Intro Images
-            Image.asset("images/6343825.jpg", width: 500, fit: .cover),
+            Image.asset("images/sign_up.png", width: 500, fit: .cover),
             const SizedBox(height: 20),
             // Input Fields for email
             TextField(
@@ -125,9 +125,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             SizedBox(
               width: .maxFinite,
               child: isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(color: Colors.blue),
-                    )
+                  ? const Center(child: CircularProgressIndicator(color: red))
                   : MyButton(onTap: signUp, buttonText: "Sign Up"),
             ),
             const SizedBox(height: 20),
@@ -149,7 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     "Login here",
                     style: baseText.copyWith(
                       fontWeight: .bold,
-                      color: Colors.blue,
+                      color: red,
                       letterSpacing: -1,
                     ),
                   ),

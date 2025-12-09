@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/pages/auth/sign_up_screen.dart';
+import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/widgets/my_button_widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -91,7 +92,7 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Column(
           children: [
             // Intro Images
-            Image.asset("images/login.jpg", width: 500, fit: .cover),
+            Image.asset("images/sign_in.png", width: 500, fit: .cover),
             const SizedBox(height: 20),
             // Input Fields for email
             TextField(
@@ -127,7 +128,7 @@ class _SignInScreenState extends State<SignInScreen> {
               width: .maxFinite,
               child: isLoading
                   ? const Center(
-                      child: CircularProgressIndicator(color: Colors.blue),
+                      child: CircularProgressIndicator(color: red),
                     )
                   : MyButton(onTap: signIn, buttonText: "Sign In"),
             ),
@@ -150,7 +151,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     "Signup here",
                     style: baseText.copyWith(
                       fontWeight: .bold,
-                      color: Colors.blue,
+                      color: red,
                       letterSpacing: -1,
                     ),
                   ),
