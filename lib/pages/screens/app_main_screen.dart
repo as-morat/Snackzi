@@ -20,80 +20,137 @@ class _AppMainScreenState extends State<AppMainScreen> {
     ProfileScreen(),
     Scaffold()
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[currentIndex],
       bottomNavigationBar: Container(
-        height: 90,
-        decoration: BoxDecoration(color: Colors.white),
-        child: Row(
-          mainAxisAlignment: .spaceEvenly,
-          children: [
-            _buildNavItems(Iconsax.home_15, "Home", 0),
-            const SizedBox(width: 10),
-            _buildNavItems(Iconsax.heart, "Favourite", 1),
-            const SizedBox(width: 90),
-            Stack(
-              clipBehavior: .none,
-              children: [
-                _buildNavItems(Iconsax.shopping_cart, "Cart", 3),
-                Positioned(
-                  right: -10,
-                  top: -10,
-                  child: CircleAvatar(
-                    radius: 10,
-                    backgroundColor: red,
-                    child: Text(
-                      "0",
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 60,
-                  top: -25,
-                  child: CircleAvatar(
-                    backgroundColor: red,
-                    radius: 35,
-                    child: Icon(
-                      CupertinoIcons.search,
-                      size: 35,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
+        // Reduced height for better mobile UX standards
+        height: 75,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          // Added subtle shadow for depth
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: Offset(0, -2),
             ),
-            const SizedBox(width: 10),
-            _buildNavItems(Iconsax.user, "Profile", 2),
           ],
         ),
+        // SafeArea ensures content stays within device bounds
+        child: SafeArea(
+          child: Padding(
+            // Horizontal padding for breathing room
+            padding: const .symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: .spaceBetween,
+              children: [
+                _buildNavItems(Iconsax.home_15, "Home", 0),
+                _buildNavItems(Iconsax.heart, "Favourite", 1),
+                // Center search button with proper spacing
+                const SizedBox(width: 70),
+                _buildNavItems(Iconsax.shopping_cart, "Cart", 3),
+                _buildNavItems(Iconsax.user, "Profile", 2),
+              ],
+            ),
+          ),
+        ),
       ),
+      // Floating search button positioned at center
+      floatingActionButton: Container(
+        height: 65,
+        width: 65,
+        decoration: BoxDecoration(
+          shape: .circle,
+          color: red,
+          // Enhanced shadow for floating effect
+          boxShadow: [
+            BoxShadow(
+              color: red.withValues(alpha: 0.3),
+              blurRadius: 15,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Icon(
+          CupertinoIcons.search,
+          size: 30,
+          color: Colors.white,
+        ),
+      ),
+      floatingActionButtonLocation: .centerDocked,
     );
   }
 
-  // helper method to build navigation items
+  // Helper method to build navigation items with improved interaction feedback
   Widget _buildNavItems(IconData icon, String label, int index) {
+    final isActive = currentIndex == index;
     return GestureDetector(
       onTap: () {
         setState(() {
           currentIndex = index;
         });
       },
-      child: Column(
-        children: [
-          Icon(
-            icon,
-            size: 28,
-            color: currentIndex == index ? red : Colors.grey,
-          ),
-          const SizedBox(height: 3),
-          CircleAvatar(
-            radius: 3,
-            backgroundColor: currentIndex == index ? red : Colors.transparent,
-          ),
-        ],
+      // Ink splash effect for better touch feedback
+      child: Container(
+        padding: const .symmetric(horizontal: 12, vertical: 8),
+        child: Stack(
+          clipBehavior: .none,
+          children: [
+            Column(
+              mainAxisAlignment: .center,
+              mainAxisSize: .min,
+              children: [
+                Icon(
+                  icon,
+                  size: 26,
+                  color: isActive ? red : Colors.grey.shade600,
+                ),
+                const SizedBox(height: 4),
+                // Active indicator dot
+                AnimatedContainer(
+                  duration: Duration(milliseconds: 200),
+                  height: 5,
+                  width: 5,
+                  decoration: BoxDecoration(
+                    shape: .circle,
+                    color: isActive ? red : Colors.transparent,
+                  ),
+                ),
+              ],
+            ),
+            // Cart badge positioned only for cart icon
+            if (index == 3)
+              Positioned(
+                right: -7,
+                top: -10,
+                child: Container(
+                  padding: const .all(4),
+                  decoration: BoxDecoration(
+                    shape: .circle,
+                    color: red,
+                    // White border for better visibility
+                    border: .all(color: Colors.white, width: 2),
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: 18,
+                    minHeight: 18,
+                  ),
+                  child: Text(
+                    "0",
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Colors.white,
+                      fontWeight: .bold,
+                    ),
+                    textAlign: .center,
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
