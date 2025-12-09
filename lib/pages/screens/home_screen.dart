@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/utils/colors.dart';
+import 'package:food_delivery/widgets/home_app_banner_widget.dart';
 import 'package:food_delivery/widgets/home_app_bar_widgets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,7 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Padding(
             padding: const .symmetric(horizontal: 15, vertical: 20),
-            child: Column(crossAxisAlignment: .start, children: []),
+            child: Column(
+              crossAxisAlignment: .start,
+              mainAxisSize: .min,
+              children: [
+                const HomeAppBannerWidget()
+              ],
+            ),
           ),
         ],
       ),
