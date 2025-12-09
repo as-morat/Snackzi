@@ -34,16 +34,15 @@ class _AppMainScreenState extends State<AppMainScreen> {
             const SizedBox(width: 10),
             _buildNavItems(Iconsax.heart, "Favourite", 1),
             const SizedBox(width: 90),
-            _buildNavItems(Icons.person_2_outlined, "Profile", 2),
-            const SizedBox(width: 10),
             Stack(
               clipBehavior: .none,
               children: [
                 _buildNavItems(Iconsax.shopping_cart, "Cart", 3),
                 Positioned(
-                  right: -7,
-                  top: 16,
+                  right: -10,
+                  top: -10,
                   child: CircleAvatar(
+                    radius: 10,
                     backgroundColor: red,
                     child: Text(
                       "0",
@@ -52,7 +51,7 @@ class _AppMainScreenState extends State<AppMainScreen> {
                   ),
                 ),
                 Positioned(
-                  right: 155,
+                  right: 60,
                   top: -25,
                   child: CircleAvatar(
                     backgroundColor: red,
@@ -66,6 +65,8 @@ class _AppMainScreenState extends State<AppMainScreen> {
                 ),
               ],
             ),
+            const SizedBox(width: 10),
+            _buildNavItems(Iconsax.user, "Profile", 2),
           ],
         ),
       ),
