@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_delivery/pages/auth/sign_in_screen.dart';
+import 'package:food_delivery/pages/screens/app_main_screen.dart';
 import 'package:food_delivery/pages/screens/on_boarding_screen.dart';
-import 'package:food_delivery/pages/screens/home_screen.dart';
 import 'package:food_delivery/providers/stream_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -67,9 +67,9 @@ class _AuthGateState extends ConsumerState<AuthGate> {
       data: (state) {
         final session = Supabase.instance.client.auth.currentSession;
 
-        // User is authenticated -> go to Home
+        // User is authenticated -> go to Main Screen
         if (session != null) {
-          return const HomeScreen();
+          return const AppMainScreen();
         }
 
         // User not authenticated
