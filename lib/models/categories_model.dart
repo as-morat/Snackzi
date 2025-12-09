@@ -6,15 +6,15 @@
 
 // List<Category> myCategories = [
 //   Category(
-//     image: 'assets/food-delivery/burger.png',
+//     image: 'assets/food_delivery/burger.png',
 //     name: 'Burger',
 //   ),
 //   Category(
-//     image: 'assets/food-delivery/pizza.png',
+//     image: 'assets/food_delivery/pizza.png',
 //     name: 'Pizza',
 //   ),
 //   Category(
-//     image: 'assets/food-delivery/cup cake.png',
+//     image: 'assets/food_delivery/cup_cake.png',
 //     name: 'Cup Cake',
 //   ),
 // ];

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/pages/auth/sign_up_screen.dart';
-import 'package:food_delivery/widgets/my_button.dart';
+import 'package:food_delivery/widgets/my_button_widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../services/auth_service.dart';
@@ -68,6 +68,13 @@ class _SignInScreenState extends State<SignInScreen> {
         message: result,
       );
     }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   final baseText = GoogleFonts.poppins(

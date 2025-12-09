@@ -1,0 +1,160 @@
+import 'package:flutter/material.dart';
+import 'package:food_delivery/models/on_boarding_model.dart';
+import 'package:food_delivery/utils/colors.dart';
+
+class OnBoardingScreen extends StatefulWidget {
+  const OnBoardingScreen({super.key});
+
+  @override
+  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
+}
+
+class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  final PageController _pageController = PageController();
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    int currentPage = 0;
+    return Scaffold(
+      body: Stack(
+        children: [
+          // for image bg
+          Container(
+            height: size.height,
+            width: size.width,
+            color: imageBG1,
+            child: Image.asset(
+              "images/food_delivery/food_pattern.png",
+              color: imageBG2,
+              repeat: .repeatY,
+            ),
+          ),
+
+          Positioned(
+            top: -80,
+            right: 0,
+            left: 0,
+            child: Image.asset("images/food_delivery/chef.png"),
+          ),
+
+          Positioned(
+            top: 139,
+            right: 50,
+            child: Image.asset("images/food_delivery/leaf.png", width: 80),
+          ),
+
+          Positioned(
+            top: 390,
+            right: 40,
+            child: Image.asset("images/food_delivery/chili.png", width: 80),
+          ),
+
+          Positioned(
+            top: 230,
+            left: -20,
+            child: Image.asset(
+              "images/food_delivery/ginger.png",
+              height: 90,
+              width: 90,
+            ),
+          ),
+
+          Align(
+            alignment: .bottomCenter,
+            child: ClipPath(
+              child: Container(
+                color: Colors.white,
+                padding: .symmetric(vertical: 75, horizontal: 50),
+                child: Column(
+                  crossAxisAlignment: .center,
+                  mainAxisSize: .min,
+                  children: [
+                    SizedBox(
+                      height: 180,
+                      child: PageView.builder(
+                        controller: _pageController,
+                        itemCount: data.length,
+                        itemBuilder: (_, index) {
+                          final item = data[index];
+                          return Column(
+                            children: [
+                              RichText(
+                                textAlign: .center,
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 35,
+                                    fontWeight: .bold,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: item["title1"],
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    TextSpan(
+                                      text: item["title2"],
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                item["description"]!,
+                                textAlign: .center,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: .w300,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: .center,
+                      children: List.generate(
+                        data.length,
+                        (index) => AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          margin: const .only(right: 10),
+                          width: currentPage == index ? 20 : 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            color: currentPage == index
+                                ? Colors.orange
+                                : Colors.grey.shade400,
+                            borderRadius: .circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    MaterialButton(
+                      onPressed: () {},
+                      color: red,
+                      height: 65,
+                      minWidth: 250,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: .circular(30),
+                      ),
+                      child: Text(
+                        "Get Started",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: .w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
