@@ -29,26 +29,22 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               repeat: .repeatY,
             ),
           ),
-
           Positioned(
             top: -80,
             right: 0,
             left: 0,
             child: Image.asset("images/food_delivery/chef.png"),
           ),
-
           Positioned(
             top: 139,
             right: 50,
             child: Image.asset("images/food_delivery/leaf.png", width: 80),
           ),
-
           Positioned(
             top: 390,
             right: 40,
             child: Image.asset("images/food_delivery/chili.png", width: 80),
           ),
-
           Positioned(
             top: 230,
             left: -20,
@@ -59,6 +55,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
           ),
 
+          // custom welcoming page
           Align(
             alignment: .bottomCenter,
             child: ClipPath(
@@ -71,6 +68,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   crossAxisAlignment: .center,
                   mainAxisSize: .min,
                   children: [
+                    // welcoming page title
                     SizedBox(
                       height: 180,
                       child: PageView.builder(
@@ -138,6 +136,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       ),
                     ),
                     const SizedBox(height: 30),
+                    // navigation button
                     MaterialButton(
                       onPressed: () {},
                       color: red,
@@ -166,6 +165,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 }
 
+// for curve container
 class CustomClip extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
