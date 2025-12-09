@@ -62,6 +62,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           Align(
             alignment: .bottomCenter,
             child: ClipPath(
+              clipBehavior: .antiAlias,
               clipper: CustomClip(),
               child: Container(
                 color: Colors.white,
@@ -75,7 +76,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       child: PageView.builder(
                         controller: _pageController,
                         itemCount: data.length,
-                        onPageChanged: (value){
+                        onPageChanged: (value) {
                           setState(() {
                             currentPage = value;
                           });
@@ -130,7 +131,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           decoration: BoxDecoration(
                             color: currentPage == index
                                 ? Colors.orange
-                                : Colors.grey.shade400,
+                                : Colors.grey.shade300,
                             borderRadius: .circular(10),
                           ),
                         ),
@@ -165,16 +166,24 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 }
 
-class CustomClip extends CustomClipper<Path>{
+class CustomClip extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-    path.lineTo(0, 30);
-    path.lineTo(0, size.height);
+
+    path.lineTo(0, size.height * 0.1);
+
+    path.quadraticBezierTo(
+      size.width * 0.5,
+      -40,
+      size.width,
+      size.height * 0.1,
+    );
+
     path.lineTo(size.width, size.height);
-    path.lineTo(size.width, 30);
-    path.quadraticBezierTo(size.width / 2, -30, 0, 30);
+    path.lineTo(0, size.height);
     path.close();
+
     return path;
   }
 
