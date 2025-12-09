@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/models/on_boarding_model.dart';
-import 'package:food_delivery/pages/auth/sign_up_screen.dart';
 import 'package:food_delivery/utils/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -13,13 +13,54 @@ class OnBoardingScreen extends StatefulWidget {
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final PageController _pageController = PageController();
   int currentPage = 0;
+  bool isLoading = false;
+
+  /// Complete onboarding and let AuthGate handle navigation
+  Future<void> completeOnboarding() async {
+    if (!mounted) return;
+
+    setState(() => isLoading = true);
+
+    try {
+      // Simulate a small delay for better UX
+      await Future.delayed(const Duration(milliseconds: 800));
+
+      // Mark onboarding as completed
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('hasSeenOnboarding', true);
+
+      if (!mounted) return;
+
+      // Just pop - AuthGate will automatically show SignInScreen
+      // No need to manually navigate to AuthGate
+      Navigator.of(context).pop();
+
+    } catch (e) {
+      debugPrint('Error completing onboarding: $e');
+
+      if (!mounted) return;
+
+      // Show error snack bar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => isLoading = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
         children: [
-          // for image bg
+          // Image background
           Container(
             height: size.height,
             width: size.width,
@@ -27,9 +68,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             child: Image.asset(
               "images/food_delivery/food_pattern.png",
               color: imageBG2,
-              repeat: .repeatY,
+              repeat: ImageRepeat.repeatY,
             ),
           ),
+
+          // Decorative images
           Positioned(
             top: -80,
             right: 0,
@@ -56,7 +99,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
           ),
 
-          // custom welcoming page
+          // Custom welcoming page
           Align(
             alignment: .bottomCenter,
             child: ClipPath(
@@ -64,12 +107,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               clipper: CustomClip(),
               child: Container(
                 color: Colors.white,
-                padding: .symmetric(vertical: 75, horizontal: 50),
+                padding: const .symmetric(vertical: 75, horizontal: 50),
                 child: Column(
                   crossAxisAlignment: .center,
                   mainAxisSize: .min,
                   children: [
-                    // welcoming page title
+                    // Welcoming page content
                     SizedBox(
                       height: 180,
                       child: PageView.builder(
@@ -87,18 +130,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               RichText(
                                 textAlign: .center,
                                 text: TextSpan(
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 35,
                                     fontWeight: .bold,
                                   ),
                                   children: [
                                     TextSpan(
                                       text: item["title1"],
-                                      style: TextStyle(color: Colors.black),
+                                      style: const TextStyle(color: Colors.black),
                                     ),
                                     TextSpan(
                                       text: item["title2"],
-                                      style: TextStyle(color: Colors.red),
+                                      style: const TextStyle(color: Colors.red),
                                     ),
                                   ],
                                 ),
@@ -107,7 +150,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               Text(
                                 item["description"]!,
                                 textAlign: .center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: .w300,
                                   color: Colors.black,
@@ -118,11 +161,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         },
                       ),
                     ),
+
+                    // Page indicators
                     Row(
                       mainAxisSize: .min,
                       children: List.generate(
                         data.length,
-                        (index) => AnimatedContainer(
+                            (index) => AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
                           margin: const .only(right: 10),
                           width: currentPage == index ? 25 : 10,
@@ -137,21 +182,27 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    // navigation button
+
+                    // Navigation button
                     MaterialButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (_) => SignUpScreen()),
-                        );
-                      },
+                      onPressed: isLoading ? null : completeOnboarding,
                       color: red,
                       height: 65,
                       minWidth: 250,
+                      disabledColor: red.withValues(alpha: 0.6),
                       shape: RoundedRectangleBorder(
                         borderRadius: .circular(30),
                       ),
-                      child: Text(
+                      child: isLoading
+                          ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      )
+                          : const Text(
                         "Get Started",
                         style: TextStyle(
                           fontSize: 18,
@@ -169,9 +220,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 }
 
-// for curve container
+// Custom clipper for curved container
 class CustomClip extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
