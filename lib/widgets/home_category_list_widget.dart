@@ -1,88 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_delivery/utils/colors.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import '../providers/category_provider.dart';
 
-import '../models/categories_model.dart';
-
-class HomeCategoryListWidget extends StatefulWidget {
+class HomeCategoryListWidget extends ConsumerWidget {
   const HomeCategoryListWidget({super.key});
 
   @override
-  State<HomeCategoryListWidget> createState() => _HomeCategoryListWidgetState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categoriesAsync = ref.watch(categoriesProvider);
+    final selectedCategory = ref.watch(selectedCategoryProvider);
 
-class _HomeCategoryListWidgetState extends State<HomeCategoryListWidget> {
-  late Future<List<CategoryModel>> futureCategories = fetchCategories();
-  List<CategoryModel> categories = [];
-  String? selectedCategory;
-
-  @override
-  void initState() {
-    super.initState();
-    initializeData();
-  }
-
-  void initializeData() async {
-    try {
-      final fetchedCategories = await futureCategories;
-      if (fetchedCategories.isNotEmpty) {
-        setState(() {
-          categories = fetchedCategories;
-          selectedCategory = fetchedCategories.first.name;
-        });
-      }
-    } catch (e) {
-      debugPrint("Error initializing data: $e");
-    }
-  }
-
-  Future<List<CategoryModel>> fetchCategories() async {
-    try {
-      final response = await Supabase.instance.client
-          .from("categories")
-          .select();
-
-      debugPrint("Fetched categories: $response");
-
-      return (response as List)
-          .map((json) => CategoryModel.fromJson(json))
-          .toList();
-    } catch (e) {
-      debugPrint("Error fetching categories: $e");
-      return [];
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<CategoryModel>>(
-      future: futureCategories,
-      builder: (ctx, snapshot) {
-        if (snapshot.connectionState == .waiting) {
-          return const Center(
-            child: Padding(
-              padding: .all(20),
-              child: CircularProgressIndicator(color: red),
-            ),
-          );
-        }
-        if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
-          return const SizedBox.shrink();
-        }
-
+    return categoriesAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator(color: red)),
+      error: (_, _) => const SizedBox.shrink(),
+      data: (categories) {
         return SizedBox(
           height: 60,
           child: ListView.builder(
             scrollDirection: .horizontal,
             physics: const BouncingScrollPhysics(),
-            itemCount: snapshot.data!.length,
+            itemCount: categories.length,
             itemBuilder: (ctx, index) {
-              final category = snapshot.data![index];
+              final category = categories[index];
               return GestureDetector(
                 onTap: () {
-                  setState(() {
-                    selectedCategory = category.name;
-                  });
+                  ref.read(selectedCategoryProvider.notifier).state =
+                      category.name;
                 },
                 child: Container(
                   padding: const .symmetric(horizontal: 18, vertical: 10),
