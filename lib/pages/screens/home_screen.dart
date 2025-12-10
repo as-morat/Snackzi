@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                               color: orange,
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Icon(
                             Icons.arrow_forward_ios,
                             size: 14,
