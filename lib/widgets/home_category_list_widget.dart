@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/utils/colors.dart';
-import 'package:food_delivery/widgets/home_cat_list_details_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/categories_model.dart';
@@ -80,7 +79,11 @@ class _HomeCategoryListWidgetState extends State<HomeCategoryListWidget> {
             itemBuilder: (ctx, index) {
               final category = snapshot.data![index];
               return GestureDetector(
-                onTap: () => HomeCatListDetailsWidget(),
+                onTap: () {
+                  setState(() {
+                    selectedCategory = category.name;
+                  });
+                },
                 child: Container(
                   padding: const .symmetric(horizontal: 18, vertical: 10),
                   margin: const .only(right: 12, top: 2, bottom: 2),
